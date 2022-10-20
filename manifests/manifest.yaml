@@ -1,0 +1,652 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-desired-service
+spec:
+  ports:
+  - name: jacoco-agent
+    port: 6300
+    targetPort: 6300
+  - name: http-service-mesh
+    port: 8090
+    targetPort: 8090
+  - name: https
+    port: 443
+    targetPort: 8443
+  selector:
+    app: blitz-webservice
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-root-service
+spec:
+  ports:
+  - name: http-service-mesh
+    port: 8090
+    targetPort: 8090
+  - name: https
+    port: 443
+    targetPort: 8443
+  selector:
+    app: blitz-webservice
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks-metric: actuator-prometheus
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    mesh-metrics: mesh-envoy-prometheus
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-service-metrics
+spec:
+  ports:
+  - name: iks-metric
+    port: 8490
+    targetPort: 8490
+  selector:
+    app: blitz-webservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-stable-service
+spec:
+  ports:
+  - name: http-service-mesh
+    port: 8090
+    targetPort: 8090
+  - name: https
+    port: 443
+    targetPort: 8443
+  selector:
+    app: blitz-webservice
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jacoco-server
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: jacoco-server-service
+spec:
+  ports:
+  - name: jacoco-port
+    port: 443
+    targetPort: 8443
+  selector:
+    app: jacoco-server
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jacoco-server
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: jacoco-server-deployment
+spec:
+  selector:
+    matchLabels:
+      app: jacoco-server
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        app: jacoco-server
+        assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+        assetId: "1084259203230380459"
+        env: qal
+        iks.intuit.com/express-version: v0.0-master-68c8e9b
+        region: usw2
+        workspace: sandbox-sandbox-deletemeoamkustomize-qal
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILE
+          value: prdssl
+        image: docker.intuit.com/dev/integration/cg-sre-services/service/jacoco:0.1.2
+        name: app
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-pdb
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: blitz-webservice
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-cpu-utilization
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: cpu-utilization-limit-perc
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: cpu-utilization
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: (quantile(0.5, quantile_over_time(0.5, namespace_pod_cpu_utilization{namespace="{{args.namespace}}",
+          pod=~".*-{{args.canary-hash}}-.*"}[11m])))
+    successCondition: result[0] <= {{args.cpu-utilization-limit-perc}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-error-rate
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: error-rate-limit-percentage
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: error-rate
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: |-
+          (sum(sum_over_time(namespace_pod_http_server_requests_errors_5xx{namespace="{{args.namespace}}", rollouts_pod_template_hash="{{args.canary-hash}}"}[11m]))
+          /
+          sum(sum_over_time(namespace_pod_http_server_requests_count{namespace="{{args.namespace}}", rollouts_pod_template_hash="{{args.canary-hash}}"}[11m]))) * 100
+          OR on() vector(0)
+    successCondition: result[0] <= {{args.error-rate-limit-percentage}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-memory-utilization
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: memory-utilization-limit-perc
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: memory-utilization
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: (quantile(0.5, quantile_over_time(0.5, namespace_pod_memory_utilization{namespace="{{args.namespace}}",
+          pod=~".*-{{args.canary-hash}}-.*"}[11m])))
+    successCondition: result[0] <= {{args.memory-utilization-limit-perc}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-pod-restarts
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: pod-restarts
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: |-
+          sum(
+          sum_over_time(kube_pod_container_status_restarts_total{namespace="{{args.namespace}}",pod=~".*-{{args.canary-hash}}-.*"}[5m])
+          )
+    successCondition: result[0] == 0
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-request-latency
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: request-latency-limit-msec
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: request-latency
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: (quantile(0.95, quantile_over_time(0.95, namespace_pod_http_server_requests_latency{namespace="{{args.namespace}}",
+          rollouts_pod_template_hash="{{args.canary-hash}}"}[11m]))*1000)
+    successCondition: result[0] < {{args.request-latency-limit-msec}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-success-rate
+spec:
+  args:
+  - name: namespace
+  - name: stable-hash
+  - name: canary-hash
+  - name: prometheus-port
+  - name: success-rate-min-percentage
+  - name: initial-delay
+    value: 1m
+  - name: count
+    value: "10"
+  - name: interval
+    value: 60s
+  - name: failure-limit
+    value: "1"
+  - name: inconclusive-limit
+    value: "1"
+  metrics:
+  - count: '{{args.count}}'
+    failureLimit: '{{args.failure-limit}}'
+    inconclusiveLimit: '{{args.inconclusive-limit}}'
+    initialDelay: '{{args.initial-delay}}'
+    interval: '{{args.interval}}'
+    name: success-rate
+    provider:
+      prometheus:
+        address: http://prometheus.addon-metricset-ns.svc.cluster.local:{{args.prometheus-port}}
+        query: |-
+          (sum(sum_over_time(namespace_pod_http_server_requests_2xx{namespace="{{args.namespace}}", rollouts_pod_template_hash="{{args.canary-hash}}"}[11m]))
+          /
+          sum(sum_over_time(namespace_pod_http_server_requests_count{namespace="{{args.namespace}}", rollouts_pod_template_hash="{{args.canary-hash}}"}[11m]))) * 100
+    successCondition: result[0] >= {{args.success-rate-min-percentage}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  labels:
+    app: blitz-webservice
+    appType: spring-boot
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    buildType: maven
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-rollout
+spec:
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: blitz-webservice
+  strategy:
+    canary:
+      canaryMetadata:
+        annotations:
+          role: canary
+        labels:
+          role: canary
+      canaryService: blitz-webservice-desired-service
+      maxSurge: 25%
+      maxUnavailable: 0%
+      stableMetadata:
+        annotations:
+          role: stable
+        labels:
+          role: stable
+      stableService: blitz-webservice-stable-service
+      trafficRouting:
+        istio:
+          virtualService:
+            name: blitz-webservice-rollout-vsvc
+  template:
+    metadata:
+      annotations:
+        admiral.io/env: qal
+        alpha.istio.io/identity: Intuit.sandbox.sandbox.deletemeoamkustomize
+        iam.amazonaws.com/role: disabled
+        policyId: p-vnuzcvjcpvnk
+        sidecar.istio.io/inject: "true"
+        traffic.sidecar.istio.io/excludeOutboundPorts: 3306,3308,61617,443
+        traffic.sidecar.istio.io/includeInboundPorts: "8090"
+      labels:
+        app: blitz-webservice
+        assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+        assetId: "1084259203230380459"
+        env: qal
+        iks.intuit.com/express-version: v0.0-master-68c8e9b
+        istio-injected: "true"
+        region: usw2
+        workspace: sandbox-sandbox-deletemeoamkustomize-qal
+    spec:
+      containers:
+      - env:
+        - name: MESH_ENABLED
+          value: "true"
+        - name: MESH_SIDECAR_PORT
+          value: "15000"
+        - name: MESH_TRAFFIC_PORT
+          value: "8090"
+        - name: APP_ENV
+          value: qal
+        - name: APP_NAME
+          value: blitz-webservice
+        - name: APP_REGION
+          value: usw2
+        - name: ASSET_ID
+          value: "1084259203230380459"
+        - name: ASSET_ALIAS
+          value: Intuit.sandbox.sandbox.deletemeoamkustomize
+        image: docker.intuit.com/devx/awesometeam/awesomeservice:v1.0
+        name: app
+        ports:
+        - containerPort: 6300
+          name: jacoco-agent
+        - containerPort: 8443
+          name: service
+        - containerPort: 8490
+          name: metrics
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/full
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 2
+          timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 4Gi
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  labels:
+    app: blitz-webservice
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-rollout-hpa
+spec:
+  behavior:
+    scaleDown:
+      policies:
+      - periodSeconds: 60
+        type: Percent
+        value: 10
+      selectPolicy: Min
+      stabilizationWindowSeconds: 300
+    scaleUp:
+      policies:
+      - periodSeconds: 15
+        type: Percent
+        value: 30
+      - periodSeconds: 15
+        type: Pods
+        value: 2
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
+  maxReplicas: 6
+  metrics:
+  - object:
+      describedObject:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: blitz-webservice
+      metric:
+        name: namespace_app_pod_cpu_utilization
+      target:
+        type: Value
+        value: 40
+    type: Object
+  - object:
+      describedObject:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: blitz-webservice
+      metric:
+        name: namespace_app_container_app_ready_only_avg_cpu_utilization
+      target:
+        type: Value
+        value: 40
+    type: Object
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: blitz-webservice-rollout
+---
+apiVersion: iammanager.keikoproj.io/v1alpha1
+kind: Iamrole
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+    iam.amazonaws.com/irsa-service-account: default
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: iamrole
+spec:
+  PolicyDocument:
+    Statement:
+    - Action:
+      - ec2:*
+      Effect: Deny
+      Resource:
+      - '*'
+    - Action:
+      - iam:*
+      Effect: Deny
+      Resource:
+      - '*'
+    - Action:
+      - sts:AssumeRole
+      Condition:
+        ForAnyValue:StringLike:
+          aws:PrincipalOrgID:
+          - o-u8n9zusoqk
+          - o-9wh07n9o01
+          - o-37g0ys4np6
+      Effect: Allow
+      Resource:
+      - '*'
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  labels:
+    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
+    assetId: "1084259203230380459"
+    env: qal
+    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    region: usw2
+    workspace: sandbox-sandbox-deletemeoamkustomize-qal
+  name: blitz-webservice-rollout-vsvc
+spec:
+  exportTo:
+  - .
+  hosts:
+  - dummy.intuit.sandbox.sandbox.deletemeoamkustomize.mesh
+  http:
+  - route:
+    - destination:
+        host: blitz-webservice-stable-service
+      weight: 100
+    - destination:
+        host: blitz-webservice-desired-service
+      weight: 0
