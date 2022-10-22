@@ -5,23 +5,17 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-desired-service
+  name: kubecon-demo-appd-desired-service
 spec:
   ports:
-  - name: jacoco-agent
-    port: 6300
-    targetPort: 6300
-  - name: http-service-mesh
-    port: 8090
-    targetPort: 8090
   - name: https
     port: 443
     targetPort: 8443
   selector:
-    app: blitz-webservice
+    app: kubecon-demo
   type: NodePort
 ---
 apiVersion: v1
@@ -31,20 +25,17 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-root-service
+  name: kubecon-demo-appd-root-service
 spec:
   ports:
-  - name: http-service-mesh
-    port: 8090
-    targetPort: 8090
   - name: https
     port: 443
     targetPort: 8443
   selector:
-    app: blitz-webservice
+    app: kubecon-demo
   type: NodePort
 ---
 apiVersion: v1
@@ -55,18 +46,17 @@ metadata:
     assetId: "1084259203230380459"
     env: qal
     iks-metric: actuator-prometheus
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    mesh-metrics: mesh-envoy-prometheus
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-service-metrics
+  name: kubecon-demo-appd-service-metrics
 spec:
   ports:
   - name: iks-metric
     port: 8490
     targetPort: 8490
   selector:
-    app: blitz-webservice
+    app: kubecon-demo
 ---
 apiVersion: v1
 kind: Service
@@ -75,94 +65,18 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-stable-service
+  name: kubecon-demo-appd-stable-service
 spec:
   ports:
-  - name: http-service-mesh
-    port: 8090
-    targetPort: 8090
   - name: https
     port: 443
     targetPort: 8443
   selector:
-    app: blitz-webservice
+    app: kubecon-demo
   type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: jacoco-server
-    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-    assetId: "1084259203230380459"
-    env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    region: usw2
-    workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: jacoco-server-service
-spec:
-  ports:
-  - name: jacoco-port
-    port: 443
-    targetPort: 8443
-  selector:
-    app: jacoco-server
-  type: NodePort
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: jacoco-server
-    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-    assetId: "1084259203230380459"
-    env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    region: usw2
-    workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: jacoco-server-deployment
-spec:
-  selector:
-    matchLabels:
-      app: jacoco-server
-  template:
-    metadata:
-      annotations: {}
-      labels:
-        app: jacoco-server
-        assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-        assetId: "1084259203230380459"
-        env: qal
-        iks.intuit.com/express-version: v0.0-master-68c8e9b
-        region: usw2
-        workspace: sandbox-sandbox-deletemeoamkustomize-qal
-    spec:
-      containers:
-      - env:
-        - name: SPRING_PROFILE
-          value: prdssl
-        image: docker.intuit.com/dev/integration/cg-sre-services/service/jacoco:0.1.2
-        name: app
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  labels:
-    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-    assetId: "1084259203230380459"
-    env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    region: usw2
-    workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-pdb
-spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: blitz-webservice
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
@@ -171,10 +85,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-cpu-utilization
+  name: kubecon-demo-cpu-utilization
 spec:
   args:
   - name: namespace
@@ -213,10 +127,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-error-rate
+  name: kubecon-demo-error-rate
 spec:
   args:
   - name: namespace
@@ -258,10 +172,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-memory-utilization
+  name: kubecon-demo-memory-utilization
 spec:
   args:
   - name: namespace
@@ -300,10 +214,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-pod-restarts
+  name: kubecon-demo-pod-restarts
 spec:
   args:
   - name: namespace
@@ -343,10 +257,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-request-latency
+  name: kubecon-demo-request-latency
 spec:
   args:
   - name: namespace
@@ -385,10 +299,10 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-success-rate
+  name: kubecon-demo-success-rate
 spec:
   args:
   - name: namespace
@@ -426,84 +340,65 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   labels:
-    app: blitz-webservice
+    app: kubecon-demo
     appType: spring-boot
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     buildType: maven
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-rollout
+  name: kubecon-demo-appd-rollout
 spec:
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: blitz-webservice
+      app: kubecon-demo
   strategy:
     canary:
-      canaryMetadata:
-        annotations:
-          role: canary
-        labels:
-          role: canary
-      canaryService: blitz-webservice-desired-service
+      canaryService: kubecon-demo-appd-desired-service
       maxSurge: 25%
       maxUnavailable: 0%
-      stableMetadata:
-        annotations:
-          role: stable
-        labels:
-          role: stable
-      stableService: blitz-webservice-stable-service
-      trafficRouting:
-        istio:
-          virtualService:
-            name: blitz-webservice-rollout-vsvc
+      stableService: kubecon-demo-appd-stable-service
   template:
     metadata:
       annotations:
-        admiral.io/env: qal
-        alpha.istio.io/identity: Intuit.sandbox.sandbox.deletemeoamkustomize
         iam.amazonaws.com/role: disabled
-        policyId: p-vnuzcvjcpvnk
-        sidecar.istio.io/inject: "true"
-        traffic.sidecar.istio.io/excludeOutboundPorts: 3306,3308,61617,443
-        traffic.sidecar.istio.io/includeInboundPorts: "8090"
       labels:
-        app: blitz-webservice
+        app: kubecon-demo
         assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
         assetId: "1084259203230380459"
         env: qal
-        iks.intuit.com/express-version: v0.0-master-68c8e9b
-        istio-injected: "true"
+        iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
         region: usw2
         workspace: sandbox-sandbox-deletemeoamkustomize-qal
     spec:
       containers:
       - env:
-        - name: MESH_ENABLED
-          value: "true"
-        - name: MESH_SIDECAR_PORT
-          value: "15000"
-        - name: MESH_TRAFFIC_PORT
-          value: "8090"
+        - name: APP_NAME
+          value: kubecon-demo
         - name: APP_ENV
           value: qal
-        - name: APP_NAME
-          value: blitz-webservice
         - name: APP_REGION
           value: usw2
         - name: ASSET_ID
           value: "1084259203230380459"
         - name: ASSET_ALIAS
           value: Intuit.sandbox.sandbox.deletemeoamkustomize
-        image: docker.intuit.com/devx/awesometeam/awesomeservice:v1.0
+        - name: L1
+          value: TODO:l1
+        - name: L2
+          value: TODO:l2
+        - name: APPDYNAMICS_AGENT_TIER_NAME
+          value: app
+        - name: APPDYNAMICS_CONTROLLER_HOST_NAME
+          value: TODO:appd host
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+          value: TODO:appd account
+        image: docker.intuit.com/dev/patterns/kubernetes/express/express-service-demo:v1.0.0
         name: app
         ports:
-        - containerPort: 6300
-          name: jacoco-agent
         - containerPort: 8443
           name: service
         - containerPort: 8490
@@ -520,24 +415,57 @@ spec:
           timeoutSeconds: 2
         resources:
           limits:
-            cpu: 4000m
+            cpu: 2000m
             memory: 4Gi
           requests:
             cpu: 1000m
-            memory: 4Gi
+            memory: 2Gi
+        volumeMounts:
+        - mountPath: /etc/secrets
+          name: secrets
+      initContainers:
+      - args:
+        - -c
+        - /usr/local/bin/segment-app-init secrets get
+        command:
+        - /bin/sh
+        env:
+        - name: APP_NAME
+          value: TODO:app-name
+        - name: APP_ENV
+          value: TODO:env-name
+        - name: ASSET_ID
+          value: "000000000000"
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+          value: TODO:appd-account
+        - name: SEGMENT_CLUSTER_ROLE_ARN
+          value: TODO:appd-cluster-role
+        - name: SEGMENT_IDPS_APPLIANCE
+          value: TODO:idps-appliance
+        - name: SEGMENT_IDPS_POLICY_ID
+          value: TODO:idps-policy-id
+        image: TODO:image-id
+        name: segment-app-init
+        volumeMounts:
+        - mountPath: /etc/secrets
+          name: secrets
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: secrets
 ---
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   labels:
-    app: blitz-webservice
+    app: kubecon-demo
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
+    iks.intuit.com/express-version: v0.0-kubecon-demo-9487b16
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-rollout-hpa
+  name: kubecon-demo-rollout-hpa
 spec:
   behavior:
     scaleDown:
@@ -551,19 +479,19 @@ spec:
       policies:
       - periodSeconds: 15
         type: Percent
-        value: 30
+        value: 40
       - periodSeconds: 15
         type: Pods
         value: 2
       selectPolicy: Max
       stabilizationWindowSeconds: 0
-  maxReplicas: 6
+  maxReplicas: 18
   metrics:
   - object:
       describedObject:
         apiVersion: apps/v1
         kind: Deployment
-        name: blitz-webservice
+        name: kubecon-demo
       metric:
         name: namespace_app_pod_cpu_utilization
       target:
@@ -574,7 +502,7 @@ spec:
       describedObject:
         apiVersion: apps/v1
         kind: Deployment
-        name: blitz-webservice
+        name: kubecon-demo
       metric:
         name: namespace_app_container_app_ready_only_avg_cpu_utilization
       target:
@@ -585,68 +513,4 @@ spec:
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
-    name: blitz-webservice-rollout
----
-apiVersion: iammanager.keikoproj.io/v1alpha1
-kind: Iamrole
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "-5"
-    iam.amazonaws.com/irsa-service-account: default
-  labels:
-    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-    assetId: "1084259203230380459"
-    env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    region: usw2
-    workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: iamrole
-spec:
-  PolicyDocument:
-    Statement:
-    - Action:
-      - ec2:*
-      Effect: Deny
-      Resource:
-      - '*'
-    - Action:
-      - iam:*
-      Effect: Deny
-      Resource:
-      - '*'
-    - Action:
-      - sts:AssumeRole
-      Condition:
-        ForAnyValue:StringLike:
-          aws:PrincipalOrgID:
-          - o-u8n9zusoqk
-          - o-9wh07n9o01
-          - o-37g0ys4np6
-      Effect: Allow
-      Resource:
-      - '*'
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  labels:
-    assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
-    assetId: "1084259203230380459"
-    env: qal
-    iks.intuit.com/express-version: v0.0-master-68c8e9b
-    region: usw2
-    workspace: sandbox-sandbox-deletemeoamkustomize-qal
-  name: blitz-webservice-rollout-vsvc
-spec:
-  exportTo:
-  - .
-  hosts:
-  - dummy.intuit.sandbox.sandbox.deletemeoamkustomize.mesh
-  http:
-  - route:
-    - destination:
-        host: blitz-webservice-stable-service
-      weight: 100
-    - destination:
-        host: blitz-webservice-desired-service
-      weight: 0
+    name: kubecon-demo-rollout
