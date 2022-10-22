@@ -444,7 +444,7 @@ spec:
           value: TODO:idps-appliance
         - name: SEGMENT_IDPS_POLICY_ID
           value: TODO:idps-policy-id
-        image: docker.intuit.com/personal/aragunathan/segment-app-init:1.1
+        image: docker.intuit.com/dev/containers/segment-app-init/service/segment-app-init:1.1
         name: segment-app-init
         volumeMounts:
         - mountPath: /etc/secrets
