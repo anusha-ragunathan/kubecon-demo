@@ -513,4 +513,4 @@ spec:
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
-    name: kubecon-demo-rollout
+    name: kubecon-demo-appd-rollout
