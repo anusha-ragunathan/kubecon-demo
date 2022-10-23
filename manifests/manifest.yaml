@@ -5,7 +5,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-appd-desired-service
@@ -25,7 +25,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-appd-root-service
@@ -46,7 +46,7 @@ metadata:
     assetId: "1084259203230380459"
     env: qal
     iks-metric: actuator-prometheus
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-appd-service-metrics
@@ -65,7 +65,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-appd-stable-service
@@ -85,7 +85,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-cpu-utilization
@@ -127,7 +127,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-error-rate
@@ -172,7 +172,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-memory-utilization
@@ -214,7 +214,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-pod-restarts
@@ -257,7 +257,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-request-latency
@@ -299,7 +299,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-success-rate
@@ -346,7 +346,7 @@ metadata:
     assetId: "1084259203230380459"
     buildType: maven
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-appd-rollout
@@ -370,7 +370,7 @@ spec:
         assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
         assetId: "1084259203230380459"
         env: qal
-        iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+        iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
         region: usw2
         workspace: sandbox-sandbox-deletemeoamkustomize-qal
     spec:
@@ -415,11 +415,11 @@ spec:
           timeoutSeconds: 2
         resources:
           limits:
-            cpu: 2000m
-            memory: 2Gi
-          requests:
             cpu: 1000m
             memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi
         volumeMounts:
         - mountPath: /etc/secrets
           name: secrets
@@ -462,7 +462,7 @@ metadata:
     assetAlias: Intuit.sandbox.sandbox.deletemeoamkustomize
     assetId: "1084259203230380459"
     env: qal
-    iks.intuit.com/express-version: v0.0-kubecon-demo-a743ff1
+    iks.intuit.com/express-version: v0.0-kubecon-demo-a946144
     region: usw2
     workspace: sandbox-sandbox-deletemeoamkustomize-qal
   name: kubecon-demo-rollout-hpa
@@ -487,28 +487,12 @@ spec:
       stabilizationWindowSeconds: 0
   maxReplicas: 18
   metrics:
-  - object:
-      describedObject:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: kubecon-demo
-      metric:
-        name: namespace_app_pod_cpu_utilization
+  - resource:
+      name: cpu
       target:
-        type: Value
-        value: 40
-    type: Object
-  - object:
-      describedObject:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: kubecon-demo
-      metric:
-        name: namespace_app_container_app_ready_only_avg_cpu_utilization
-      target:
-        type: Value
-        value: 40
-    type: Object
+        averageUtilization: 50
+        type: Utilization
+    type: Resource
   minReplicas: 3
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
