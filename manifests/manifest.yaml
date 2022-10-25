@@ -415,11 +415,11 @@ spec:
           timeoutSeconds: 2
         resources:
           limits:
-            cpu: 1000m
-            memory: 1Gi
-          requests:
             cpu: 500m
-            memory: 512Mi
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
         volumeMounts:
         - mountPath: /etc/secrets
           name: secrets
