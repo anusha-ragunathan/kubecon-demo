@@ -396,7 +396,7 @@ spec:
           value: TODO:appd host
         - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
           value: TODO:appd account
-        image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+        image: docker.intuit.com/dev/patterns/kubernetes/express/express-service-demo:v1.0.0
         name: app
         ports:
         - containerPort: 8443
